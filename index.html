@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-image: url('d2.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: 'Brush Script MT', cursive;
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 6em;
+            color: white; /* Change the font color here */
+        }
+        .countdown div {
+            margin: 0 20px;
+            padding: 20px;
+            border: 0px solid #000;
+        }
+        /* Add this style for the falling letters and emojis */
+        .falling {
+            position: absolute;
+            color: white;
+            font-size: 30px;
+            animation: fall linear infinite;
+        }
+        /* Add this style for the top text */
+        .top-text {
+            font-size: 8em; /* Change the font size here */
+            text-align: center;
+            color: white;
+        }
+        @keyframes fall {
+            0% { top: -50px; }
+            100% { top: 100vh; }
+        }
+    </style>
+</head>
+<body>
+    <div id="paragraph" style="display: none; color: white; text-align: center;font-size: 2em; position: absolute; bottom: 0; width: 100%;">
+        what do you  think 
+        B-day countdown  😎
+    </div>
+    <!-- Add this div for the top text -->
+    <div class="top-text" id="top-text">Surprise</div>
+
+    <div class="countdown">
+        <div id="days"></div>
+        <div id="hours"></div>
+        <div id="minutes"></div>
+        <div id="seconds"></div>
+    </div>
+
+    <audio id="myAudio">
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        var countDownDate = new Date().getTime() + 60000; // Current time + 5 seconds
+        var x = document.getElementById("myAudio"); 
+
+        var countdownFunction = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("seconds").innerHTML = seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.querySelector(".countdown").innerHTML = "April Fools in May";
+                document.getElementById("top-text").style.display = "none"; // Hide the top text
+                document.getElementById("paragraph").style.display = "block";
+                x.play(); 
+                startRain(); // Start the letter and emoji rain after countdown
+            }
+        }, 1000);
+
+        // Function to start the letter and emoji rain
+        function startRain() {
+            var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇','✨','🎉','🎁']; // Add more emojis if you want
+            setInterval(function() {
+                var falling = document.createElement('div');
+                falling.className = 'falling';
+                falling.style.left = Math.random() * window.innerWidth + 'px';
+                falling.style.animationDuration = Math.random() * 2 + 2 + 's';
+                falling.textContent = Math.random() < 0.5 ? 
+                    letters.charAt(Math.floor(Math.random() * letters.length)) : 
+                    emojis[Math.floor(Math.random() * emojis.length)];
+                document.body.appendChild(falling);
+                setTimeout(function() {
+                    document.body.removeChild(falling);
+                }, 2000);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
